@@ -28,7 +28,7 @@ public class SemesterCourseService {
 
     public void saveSemesterCourse(MultipartFile multipartFile){
         String line = "";
-        String splitBy = ";";
+        String splitBy = "ь";
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"));
             while ((line = br.readLine()) != null) {
@@ -49,6 +49,7 @@ public class SemesterCourseService {
                 semesterCourse.setLocation(data[8]);
                 semesterCourseRepository.save(semesterCourse);
             }
+            System.out.println("good");
         } catch (IOException e) {
             e.printStackTrace();
         }
