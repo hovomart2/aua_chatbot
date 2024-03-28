@@ -26,27 +26,31 @@ public class SemesterCourseService {
         this.courseRepository = courseRepository;
     }
 
-    public void saveSemesterCourse(MultipartFile multipartFile){
+    public void saveSemesterCourse(MultipartFile multipartFile) {
         String line = "";
-        String splitBy = "ь";
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"));
+        String splitBy = "\\$";
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"))) {
             while ((line = br.readLine()) != null) {
+                line = line.replaceAll(splitBy, splitBy + " ");
                 String[] data = line.split(splitBy);
                 SemesterCourse semesterCourse = new SemesterCourse();
                 Optional<Course> oCourse = courseRepository.findByCourseCode(data[0]);
-                if(oCourse.isEmpty()){
+                if (oCourse.isEmpty()) {
                     continue;
                 }
                 semesterCourse.setCourse(oCourse.get());
-                semesterCourse.setSection(data[1]);
-                semesterCourse.setSession(data[2]);
-                semesterCourse.setCampus(data[3]);
-                semesterCourse.setInstructorName(data[4]);
-                semesterCourse.setTimes(data[5]);
-                semesterCourse.setTakenAndSeats(data[6]);
-                semesterCourse.setSpacesWaiting(Integer.parseInt(data[7]));
-                semesterCourse.setLocation(data[8]);
+                semesterCourse.setSection(data[1].substring(1));
+                semesterCourse.setSession(data[2].substring(1));
+                semesterCourse.setCampus(data[3].substring(1));
+                semesterCourse.setInstructorName(data[4].substring(1));
+                semesterCourse.setTimes(data[5].substring(1));
+                semesterCourse.setTakenAndSeats(data[6].substring(1));
+                try {
+                    semesterCourse.setSpacesWaiting(Integer.parseInt(data[7].substring(1)));
+                } catch (NumberFormatException e) {
+                    semesterCourse.setSpacesWaiting(0);
+                }
+                semesterCourse.setLocation(data[8].substring(1));
                 semesterCourseRepository.save(semesterCourse);
             }
             System.out.println("good");

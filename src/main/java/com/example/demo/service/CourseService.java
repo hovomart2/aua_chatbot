@@ -25,9 +25,8 @@ public class CourseService {
     public void saveCourse(MultipartFile multipartFile) {
 
         String line = "";
-        String splitBy = "ь";
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"));
+        String splitBy = "\\$";
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"))){
             String row = br.readLine();
             while (row != null) {
                 line = row;
@@ -62,10 +61,9 @@ public class CourseService {
 
     public void savePrerequisite(MultipartFile multipartFile) {
         String line = "";
-        String splitBy = "ь";
+        String splitBy = "\\$";
         String splitPrBy = "&";
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream(), "UTF-8"))){
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(splitBy);
                 if (data.length == 1){
