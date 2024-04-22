@@ -88,12 +88,42 @@ public class CourseService {
         }
     }
 
-    public List<Course> getPrerequisiteByName(String courseName){
-        Optional<Course> oCourse = courseRepository.findByCourseName(courseName);
+    public List<Course> getPrerequisite(String courseInfo){
+        Optional<Course> oCourse = courseRepository.findByCourseName(courseInfo);
+        Course course = null;
         if(oCourse.isEmpty()){
-            throw new EntityNotFoundException();
+            oCourse = courseRepository.findByCourseCode(courseInfo);
+            if(oCourse.isEmpty()){
+                throw new EntityNotFoundException();
+            }
         }
-        Course course = oCourse.get();
+        course = oCourse.get();
         return course.getPrerequisites().stream().toList();
+    }
+
+    public String getDescription(String courseInfo){
+        Optional<Course> oCourse = courseRepository.findByCourseName(courseInfo);
+        Course course = null;
+        if(oCourse.isEmpty()){
+            oCourse = courseRepository.findByCourseCode(courseInfo);
+            if(oCourse.isEmpty()){
+                throw new EntityNotFoundException();
+            }
+        }
+        course = oCourse.get();
+        return course.getDescription();
+    }
+
+    public int getCredits(String courseInfo){
+        Optional<Course> oCourse = courseRepository.findByCourseName(courseInfo);
+        Course course = null;
+        if(oCourse.isEmpty()){
+            oCourse = courseRepository.findByCourseCode(courseInfo);
+            if(oCourse.isEmpty()){
+                throw new EntityNotFoundException();
+            }
+        }
+        course = oCourse.get();
+        return course.getCredits();
     }
 }

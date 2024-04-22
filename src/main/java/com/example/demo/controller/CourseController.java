@@ -60,15 +60,36 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
-    @GetMapping("{courseName}/prerequisite")
-    public ResponseEntity<?> getPrerequisite(@PathVariable String courseName){
+    @GetMapping("{courseInfo}/prerequisite")
+    public ResponseEntity<?> getPrerequisite(@PathVariable String courseInfo){
         List<Course> courseList;
         try {
-            courseList = courseService.getPrerequisiteByName(courseName);
+            courseList = courseService.getPrerequisite(courseInfo);
         }catch (EntityNotFoundException e){
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not find the course!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(courseList);
     }
 
+    @GetMapping("{courseInfo}/description")
+    public ResponseEntity<?> getDescription(@PathVariable String courseInfo){
+        String description;
+        try {
+            description = courseService.getDescription(courseInfo);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not find the course!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(description);
+    }
+
+    @GetMapping("{courseInfo}/credits")
+    public ResponseEntity<?> getCredits(@PathVariable String courseInfo){
+        int credits;
+        try {
+            credits = courseService.getCredits(courseInfo);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not find the course!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(credits);
+    }
 }
