@@ -21,7 +21,7 @@ public class StudentService {
 
     public void save(MultipartFile file) {
         String line = "";
-        String splitBy = ";";
+        String splitBy = "\\$";
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"));
             while ((line = br.readLine()) != null) {
